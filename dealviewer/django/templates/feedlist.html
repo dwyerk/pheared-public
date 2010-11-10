@@ -1,0 +1,2 @@
+{% for feed in feed_list %}
+    <li class="feed" id="{{feed.id}}" onClick="javascript:alert('Selected '+this.id+'!');" style="cursor:pointer;">{{ feed.name }}</li>{% endfor %}

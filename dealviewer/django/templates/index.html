@@ -1,0 +1,55 @@
+{% include "dealviewer/head.html" %}
+<body onLoad="javascript:load();">
+DealViewer v1.0 by Kevin Dwyer &lt;kevin at pheared.net&gt;.
+<div>The deal viewer will automatically update itself with new deals
+periodically, so stick around.</div>
+<form method="GET" action="search">
+<input name="q" type="text" value=""><input type="submit" value="Search Deals">
+</form>
+{% if err %}
+<div class="error"><p>{{ err }}</p></div>
+{% endif %}
+
+{% if show_filters %}
+<dl style="float:right; text-align:right;"><dt>Feeds:</dt>
+<dd><ul class="feed_list" id="feeds">{% include "dealviewer/feedlist.html" %}</ul>
+</dd>
+</dl>
+{% endif %}
+
+{% if deal_list %}
+<p>Here are the last {% if show_minus %}<a href="?num_deals={{ num_deals|add:"-5" }}" alt="Show 5 less deals" title="Show 5 less deals">-</a>{% endif %}{{ num_deals }}{% if show_plus %}<a href="?num_deals={{ num_deals|add:"5" }}" alt="Show 5 more deals" title="Show 5 more deals">+</a>{% endif %} deals:</p>
+   <ul id="deallist" style="">{% include "dealviewer/deallist.html" %}</ul>
+{% else %}
+   <div class="error"><p>No deals available!</p>
+   <p>This is unusual, and indicates some technical difficulty.</p></div>
+{% endif %}
+
+<script language="JavaScript" type="text/javascript">
+<!--
+
+function getDealsSince(lastID) {
+    getXMLDoc("/dj/dealviewer/since_xml/"+lastID+"/", processNewDeals);
+}
+
+var numDeals = {{num_deals}};
+var timerID = null;
+var period = 120 * 1000;
+var lastID = null;
+
+function load() {
+    var ul = document.getElementById("deallist");
+    for (var i=0; i < ul.childNodes.length; i++) {
+        var item = ul.childNodes[i];
+        if (item.nodeName == "LI") {
+            var tmp = new Array();
+            tmp = item.id.split('-');
+            lastID = tmp[1];
+            break;
+        }
+    }
+    self.setTimeout("getDealsSince("+lastID+")", period);
+}
+</script>
+
+{% include "dealviewer/tail.html" %}

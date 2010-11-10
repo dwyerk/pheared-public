@@ -1,0 +1,20 @@
+{% include "dealviewer/head.html" %}
+<body>
+<a href="/dj/dealviewer/">Current Deals</a>
+<form method="GET" action="">
+<input name="q" type="text" value="{% if terms %}{{terms|escape}}{% endif %}"><input type="submit" value="Search Deals">
+</form>
+<hr style="border:none 0; border-top: 2px solid #9cf; height: 1px;">
+{% if terms %}
+<!-- <a href="/dj/dealviewer/search/save/?q={{terms}}">Save this search</a><br> -->
+{% endif %}
+{% if deal_list %}
+{{ deal_list|length }} (maximum of {{MAX_DEALS}}) results for: '{{terms}}'
+<ul id="deallist">{% include "dealviewer/deallist.html" %}</ul>
+{% endif %}
+
+{% if terms and not deal_list %}
+No results found!
+{% endif %}
+
+{% include "dealviewer/tail.html" %}

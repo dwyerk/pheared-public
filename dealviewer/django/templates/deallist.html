@@ -1,0 +1,2 @@
+{% for deal in deal_list %}
+    <li class="{% ifequal deal.feed 'FW Free Stuff' %}deal_free{% endifequal %} deal" id="deal-{{deal.deal_id}}"><div class="deal_desc"><a href="{{deal.url}}">{{ deal.description }}</a></div><div class="deal_info"><span class="feed_name">From {{ deal.feed }}</span> <span class="received_on">@ {{deal.received_on}}</span></div></li>{% endfor %}
